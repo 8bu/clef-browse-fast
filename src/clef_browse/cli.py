@@ -2,6 +2,7 @@ import argparse
 import json
 import sys
 
+from ._version import __version__
 from .config import RunLimits, load_settings
 from .executor import run_task
 from .health import check_all
@@ -10,6 +11,7 @@ from .onboard import run_setup
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="clef-browse")
+    parser.add_argument("--version", action="version", version=f"clef-browse {__version__}")
     commands = parser.add_subparsers(dest="command", required=True)
     run = commands.add_parser("run")
     run.add_argument("--url", required=True)
