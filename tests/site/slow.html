@@ -1,0 +1,20 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Slow page</title>
+<!-- Like an app that hydrates late: the DOM keeps changing for 800 ms, then the button enables. -->
+<button id="later" disabled>Later</button>
+<p id="status"></p>
+<div id="ticker"></div>
+<script>
+  let ticks = 0;
+  const timer = setInterval(() => {
+    document.getElementById("ticker").textContent += ".";
+    if (++ticks < 8) return;
+    clearInterval(timer);
+    const button = document.getElementById("later");
+    button.disabled = false;
+    button.addEventListener("click", () => {
+      document.getElementById("status").textContent = "clicked";
+    });
+  }, 100);
+</script>

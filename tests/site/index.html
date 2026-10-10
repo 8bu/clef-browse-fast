@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local browser test</title>
+</head>
+<body>
+  <main>
+    <label for="name">Name</label>
+    <input id="name" type="text" value="Ada">
+
+    <label for="size">Size</label>
+    <select id="size">
+      <option value="small">Small</option>
+      <option value="medium" selected>Medium</option>
+      <option value="large">Large</option>
+    </select>
+
+    <label for="gift-wrap"><input id="gift-wrap" type="checkbox"> Gift wrap</label>
+
+    <button id="save" type="button">Save</button>
+    <button id="submit-order" type="button">Submit order</button>
+    <p id="status" aria-live="polite"></p>
+  </main>
+  <script>
+    const status = document.querySelector("#status");
+    document.querySelector("#save").addEventListener("click", () => {
+      status.textContent = `saved:${document.querySelector("#name").value}:${document.querySelector("#size").value}`;
+    });
+    document.querySelector("#submit-order").addEventListener("click", () => {
+      status.textContent = "submitted";
+    });
+  </script>
+</body>
+</html>
