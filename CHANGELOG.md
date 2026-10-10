@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/8bu/clef-browse-fast/compare/v0.1.0...v0.2.0) (2026-10-10)
+
+
+### Features
+
+* add version flag ([ce37ea3](https://github.com/8bu/clef-browse-fast/commit/ce37ea33acb4b756fc58573dbedb8efeb47c11f3))
+
 ## 0.1.0 (2026-10-10)
 
 

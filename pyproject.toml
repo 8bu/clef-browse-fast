@@ -1,6 +1,6 @@
 [project]
 name = "clef-browse-fast"
-version = "0.1.0"
+version = "0.2.0"
 description = "Natural-language browser subtasks on an existing BrowserOS Neo session: jev-ultrafast engine, Cloudflare Clef decisions."
 readme = "README.md"
 license = "MIT"
