@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import shutil
 import socket
 import subprocess
@@ -10,6 +11,13 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).parent
+
+
+def _unavailable(reason: str) -> None:
+    """Skip on a developer machine. Fail in CI, where a skip would hide a broken test run."""
+    if os.environ.get("CI"):
+        pytest.fail(reason)
+    pytest.skip(reason)
 
 
 def _free_port() -> int:
@@ -55,7 +63,7 @@ def _chrome_binary() -> str | None:
 def test_cdp_url():
     binary = _chrome_binary()
     if not binary:
-        pytest.skip("Chrome is required for browser integration tests; install Google Chrome or Chromium")
+        _unavailable("Chrome is required for browser integration tests; install Google Chrome or Chromium")
     port = _free_port()
     profile = tempfile.TemporaryDirectory(prefix="clef-browse-test-chrome-")
     process = subprocess.Popen(
@@ -68,6 +76,7 @@ def test_cdp_url():
             "--no-default-browser-check",
             "--disable-background-networking",
             "--disable-extensions",
+            *(["--no-sandbox"] if os.environ.get("CI") else []),
             "about:blank",
         ],
         stdout=subprocess.DEVNULL,
@@ -78,7 +87,7 @@ def test_cdp_url():
     while time.monotonic() < deadline:
         if process.poll() is not None:
             profile.cleanup()
-            pytest.skip("Headless Chrome exited before its debugging endpoint became available")
+            _unavailable("Headless Chrome exited before its debugging endpoint became available")
         try:
             with socket.create_connection(("127.0.0.1", port), timeout=0.1):
                 break
@@ -88,7 +97,7 @@ def test_cdp_url():
         process.terminate()
         process.wait(timeout=5)
         profile.cleanup()
-        pytest.skip("Headless Chrome debugging endpoint did not become ready")
+        _unavailable("Headless Chrome debugging endpoint did not become ready")
     yield url
     process.terminate()
     try:
