@@ -62,8 +62,22 @@ A task that reaches a limit stops with the status `limit`.
 
 ### Secrets
 
-The program reads secrets from the environment or from the file `.env`. It does not print them. Its own error
-messages do not contain them. The `check` command shows only true or false values.
+The program reads secrets from the environment, from `.env` in the current folder, or from the settings file
+`~/.config/clef-browse/.env`. It does not print them. Its own error messages do not contain them.
+The `check` command shows only true or false values.
+
+### What the guided setup changes
+
+The command `clef-browse setup` can change three files. It asks before each change.
+
+- The settings file `~/.config/clef-browse/.env`. The setup makes the folder private and the file readable only by you.
+  The setup keeps every line that it does not set.
+- The file `~/.omp/agent/mcp.json`. The setup first copies the file to `mcp.json.bak-<time>`. It changes only the
+  entry `clef-browse`. It never overwrites a file that is not valid JSON.
+- The skill file `~/.omp/agent/skills/clef-browse-fast/SKILL.md`.
+
+The setup reads the token with a hidden prompt and never prints it. The last step opens a tab on `https://example.com`
+in Neo and closes it. That step sends a real request to Cloudflare.
 
 ## Data that leaves your computer
 

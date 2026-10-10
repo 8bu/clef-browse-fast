@@ -26,6 +26,8 @@ The solid lines are used in every task. The dotted line is used only when Clef c
 | Neo adapter | `src/clef_browse/neo.py` | Opens and closes tabs through the Neo MCP. Holds the risk terms. |
 | CDP client | `src/clef_browse/cdp.py` | Sends CDP commands to Neo over one websocket. |
 | Clef client | `src/clef_browse/clef.py` | Builds the Clef request, sends it, and checks the answer. |
+| Setup guide | `src/clef_browse/onboard.py` | Guides the first run. Saves the settings, registers the MCP server, and installs the skill. |
+| Health check | `src/clef_browse/health.py` | Checks that Neo answers and that the Cloudflare settings exist. |
 | Engine | `src/jev_ultrafast/` | Reads the page, builds the list of actions, and does the chosen action. |
 
 ## One task, step by step

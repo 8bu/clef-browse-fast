@@ -38,46 +38,44 @@ You can start a task from the command line. You can also start it from an MCP cl
 
 ## Quick start
 
-1. Install the dependencies.
+1. Install the commands. The project is not on PyPI, so install it from GitHub.
 
    ```bash
-   uv sync
+   uv tool install git+https://github.com/8bu/clef-browse-fast
    ```
 
-2. Create the settings file and fill in the values.
+2. Open the BrowserOS Neo app.
+
+3. Run the guided setup in your terminal.
 
    ```bash
-   cp .env.example .env
+   clef-browse setup
    ```
 
-   Never commit `.env`. It holds your API token. The `.gitignore` file already lists it.
+The guide has six steps. It asks before it changes a file. It never prints your token.
 
-3. Check the setup. The command prints three true or false values and no secrets.
+| Step | What the guide does |
+| --- | --- |
+| 1 | Checks that Neo answers. |
+| 2 | Asks for your Cloudflare account ID and API token. The screen shows nothing while you type the token. |
+| 3 | Asks for a text provider. This step is optional. Tasks that type text need it. |
+| 4 | Saves the settings in `~/.config/clef-browse/.env`. Only you can read the file. |
+| 5 | Adds the MCP server to `~/.omp/agent/mcp.json` and installs the skill. It makes a backup first. |
+| 6 | Runs a test task on `https://example.com` and closes the tab. |
 
-   ```bash
-   uv run clef-browse check
-   ```
+Step 5 needs OMP. If you use another MCP client, the guide prints the command to add.
 
-   All three values must be `true`: `neo_mcp`, `neo_cdp`, and `clef_env`.
+To run a task from the command line:
 
-4. Run a task.
-
-   ```bash
-   uv run clef-browse run --url https://example.com \
-     --goal "Click the 'Learn more' link. You are done when the page heading says 'Example Domains'." --json
-   ```
+```bash
+clef-browse run --url https://example.com \
+  --goal "Click the 'Learn more' link. You are done when the page heading says 'Example Domains'." --json
+```
 
 The command prints a JSON result. The `status` field is `done` when the task is complete.
 
-### Install without a clone
-
-```bash
-uv tool install git+https://github.com/8bu/clef-browse-fast
-```
-
-This installs the commands `clef-browse` and `clef-browse-mcp`. Run `clef-browse check` in a folder that holds your `.env` file.
-The commands read `.env` from the current folder. You can also set the same variables in your shell.
-After the first release, add `@vX.Y.Z` to the URL to install one version. The repository does not publish to PyPI.
+To check the setup at any time, run `clef-browse check`. It prints three true or false values and no secrets.
+To set up by hand, or to run from a clone, see [Configuration](docs/configuration.md#manual-setup).
 
 ## Write goals that finish
 
@@ -88,7 +86,7 @@ Clef decides that a task is complete only when the page shows proof. Follow thes
 
 See [Usage](docs/usage.md) for the reasons and for more examples.
 
-The MCP server sends these rules to the calling agent in the tool description. The folder `skills/clef-browse-fast` has the same rules as an agent skill.
+The MCP server sends these rules to the calling agent in the tool description. The package also has them as an agent skill. The guided setup installs the skill for OMP.
 
 ## Documentation
 

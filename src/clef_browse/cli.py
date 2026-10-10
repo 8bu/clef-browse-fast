@@ -1,12 +1,11 @@
 import argparse
 import json
-import os
 import sys
 
-import httpx
-
-from .config import RunLimits, load_dotenv, neo_urls
+from .config import RunLimits, load_settings
 from .executor import run_task
+from .health import check_all
+from .onboard import run_setup
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -19,39 +18,21 @@ def _parser() -> argparse.ArgumentParser:
     run.add_argument("--max-steps", type=int)
     run.add_argument("--timeout-s", type=float)
     run.add_argument("--json", action="store_true")
-    commands.add_parser("check")
+    commands.add_parser("check", help="Check that Neo and the Cloudflare settings are ready.")
+    commands.add_parser("setup", help="Guided first-run setup. Asks before it changes a file.")
     return parser
 
 
-def _check() -> dict[str, bool]:
-    mcp_url, cdp_url = neo_urls()
-    mcp_ok = cdp_ok = False
-    try:
-        from .neo import NeoMcp
-
-        client = NeoMcp(mcp_url)
-        client.call_tool("run", {"code": "return (await browser.pages.list()).length"})
-        client.close()
-        mcp_ok = True
-    except Exception:
-        pass
-    try:
-        response = httpx.get(f"{cdp_url.rstrip('/')}/json/version", timeout=3)
-        cdp_ok = response.is_success and str(response.json().get("Browser", "")).startswith("Chrome/")
-    except Exception:
-        pass
-    return {
-        "neo_mcp": mcp_ok,
-        "neo_cdp": cdp_ok,
-        "clef_env": bool(os.environ.get("CLOUDFLARE_ACCOUNT_ID") and os.environ.get("CLOUDFLARE_AUTH_TOKEN")),
-    }
-
-
 def main(argv: list[str] | None = None) -> int:
-    load_dotenv()
+    load_settings()
     args = _parser().parse_args(argv)
+    if args.command == "setup":
+        if not (sys.stdin.isatty() and sys.stdout.isatty()):
+            print("setup needs a terminal. Run it in your own shell.", file=sys.stderr)
+            return 2
+        return run_setup()
     if args.command == "check":
-        checks = _check()
+        checks = check_all()
         print(json.dumps(checks, sort_keys=True))
         return 0 if all(checks.values()) else 1
     defaults = RunLimits.from_env()

@@ -14,7 +14,19 @@ uv run clef-browse check
 | --- | --- | --- |
 | `neo_mcp` | Neo is not running, or the MCP address is wrong. | Start Neo. Set `BROWSEROS_NEO_MCP_URL` if the address is not `http://127.0.0.1:9010/mcp`. |
 | `neo_cdp` | Neo is not running, or the CDP address is wrong. The address must belong to a Chrome browser. | Start Neo. Set `BROWSEROS_NEO_CDP_URL` if the address is not `http://127.0.0.1:9111`. |
-| `clef_env` | The account ID or the token is not set. | Set `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_AUTH_TOKEN` in `.env`. Run the command from the folder that holds `.env`. |
+| `clef_env` | The account ID or the token is not set. | Run `clef-browse setup`. Or set `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_AUTH_TOKEN` in `~/.config/clef-browse/.env`. |
+
+## The setup command stops
+
+| Message or sign | Fix |
+| --- | --- |
+| `setup needs a terminal` | Run `clef-browse setup` in your own terminal. A script or an agent cannot answer the prompts. |
+| `Neo does not answer` | Open the BrowserOS Neo app, then answer `y` to try again. |
+| `That is not an account ID` | An account ID has 32 letters and digits. Copy it from the Cloudflare dashboard. |
+| `Cloudflare rejected the token` | Check the account ID. Check that the token has the Workers AI Read and Edit permissions. |
+| `OMP config not found` | Install OMP, or add the MCP server by hand. See [Usage](usage.md#register-the-server-in-omp). |
+
+Press Ctrl+C to stop the setup. Files that it already saved stay as they are. Run the setup again at any time.
 
 ## The task ends with a status that is not `done`
 

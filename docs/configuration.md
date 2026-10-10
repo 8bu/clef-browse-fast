@@ -4,11 +4,35 @@ This document lists every setting, its default, and the cost of a task.
 
 ## How settings load
 
-1. The program reads the file `.env` in the current working directory.
-2. A variable that is already in the environment keeps its value. The file never overrides it.
-3. The MCP server uses the `cwd` value from the MCP client settings. Set `cwd` to the folder of this project.
+1. A variable that is already in the environment keeps its value. No file overrides it.
+2. The program reads the file `.env` in the current working directory.
+3. The program reads the settings file of the user. The path is `~/.config/clef-browse/.env`.
+   The guided setup writes this file. Set `XDG_CONFIG_HOME` or `CLEF_BROWSE_CONFIG` to use another path.
 
 Never commit `.env`. It holds secrets. The file `.gitignore` lists it.
+
+## Manual setup
+
+Use this method if you do not want the guided setup.
+
+1. Create the settings file. Make the folder and the file private.
+
+   ```bash
+   mkdir -p -m 700 ~/.config/clef-browse
+   install -m 600 /dev/null ~/.config/clef-browse/.env
+   ```
+
+2. Open the file in an editor. Add these two lines with your values. The next section lists more settings.
+
+   ```text
+   CLOUDFLARE_ACCOUNT_ID=<your account ID>
+   CLOUDFLARE_AUTH_TOKEN=<your token>
+   ```
+
+3. Run `clef-browse check`. All three values must be `true`.
+4. Add the MCP server to your client. See [Usage](usage.md#register-the-server-in-omp).
+
+From a clone, you can also copy `.env.example` to `.env` in the folder of the clone.
 
 ## Settings
 

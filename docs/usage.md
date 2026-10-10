@@ -11,7 +11,15 @@ This document shows how to start a task and how to read the result.
 
 ## Command line
 
-Check the setup first:
+Run the guided setup once. It asks before it changes a file.
+
+```bash
+clef-browse setup
+```
+
+The setup needs a terminal. If you work from a clone, write `uv run` before each command in this document.
+
+Check the setup at any time:
 
 ```bash
 uv run clef-browse check
@@ -68,7 +76,21 @@ The tool returns the result as JSON text. The MCP field `isError` is `true` only
 
 ### Register the server in OMP
 
-Add this entry to `~/.omp/agent/mcp.json`. Set `cwd` to the folder of this project. The server reads `.env` from `cwd`.
+The guided setup adds this entry for you. See [Quick start](../README.md#quick-start).
+
+To add it by hand, use the full path of the program `clef-browse-mcp`. The server reads your settings from
+`~/.config/clef-browse/.env`, so the entry needs no `cwd`.
+
+```json
+"clef-browse": {
+  "type": "stdio",
+  "command": "/full/path/to/clef-browse-mcp",
+  "args": [],
+  "timeout": 300000
+}
+```
+
+To run from a clone, use `uv run`. Set `cwd` to the folder of the clone. The server then also reads `.env` from that folder.
 
 ```json
 "clef-browse": {
@@ -76,17 +98,6 @@ Add this entry to `~/.omp/agent/mcp.json`. Set `cwd` to the folder of this proje
   "command": "uv",
   "args": ["run", "clef-browse-mcp"],
   "cwd": "/path/to/clef-browse-fast",
-  "timeout": 300000
-}
-```
-
-If you installed the commands with `uv tool install`, use the command name. Set `cwd` to any folder that holds your `.env` file.
-
-```json
-"clef-browse": {
-  "type": "stdio",
-  "command": "clef-browse-mcp",
-  "cwd": "/path/to/folder-with-env-file",
   "timeout": 300000
 }
 ```

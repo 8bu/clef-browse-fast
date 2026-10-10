@@ -2,7 +2,7 @@ import json
 import sys
 
 from ._version import __version__
-from .config import RunLimits, load_dotenv
+from .config import RunLimits, load_settings
 from .executor import run_task
 
 INSTRUCTIONS = (
@@ -105,7 +105,7 @@ def handle_line(line: str) -> str | None:
 
 
 def main() -> int:
-    load_dotenv()
+    load_settings()
     for line in sys.stdin:
         try:
             response = handle_line(line)

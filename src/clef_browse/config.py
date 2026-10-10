@@ -37,6 +37,25 @@ def load_dotenv(path: str | Path = ".env") -> None:
         os.environ[key] = item
 
 
+def user_config_path() -> Path:
+    """The settings file of the user. Setup writes it, and every command reads it."""
+    override = os.environ.get("CLEF_BROWSE_CONFIG")
+    if override:
+        return Path(override).expanduser()
+    base = os.environ.get("XDG_CONFIG_HOME")
+    root = Path(base).expanduser() if base else Path.home() / ".config"
+    return root / "clef-browse" / ".env"
+
+
+def load_settings() -> None:
+    """Load `.env` in the current folder first, then the settings file of the user.
+
+    A variable that is already set keeps its value, so the environment wins, then the local file.
+    """
+    load_dotenv(".env")
+    load_dotenv(user_config_path())
+
+
 def neo_urls() -> tuple[str, str]:
     return (
         os.environ.get("BROWSEROS_NEO_MCP_URL", "http://127.0.0.1:9010/mcp"),

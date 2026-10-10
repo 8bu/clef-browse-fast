@@ -32,7 +32,7 @@ def test_mcp_initialize_tools_list_and_call(monkeypatch):
 
 
 def test_cli_exit_codes(monkeypatch, capsys):
-    monkeypatch.setattr(cli, "load_dotenv", lambda: None)
+    monkeypatch.setattr(cli, "load_settings", lambda: None)
     monkeypatch.setattr(
         cli, "run_task", lambda *args, **kwargs: {"status": "done", "outcome": "done", "risky": None, "error": None}
     )
