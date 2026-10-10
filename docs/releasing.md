@@ -45,8 +45,8 @@ The workflow does not publish to PyPI.
 - The workflow `ci.yml` runs the linter, the tests, and the build on each push and each pull request.
 - The workflow `pr-title.yml` checks that a pull request title follows the commit format. Use the squash merge, so that
   the title becomes the commit message.
-- A pull request that the release workflow opens does not start `ci.yml`. This is a GitHub rule for pull requests that
-  the built-in token creates. Run the checks on `main` before you merge the release pull request.
+- The checks on a release pull request show the status `action_required`. Approve the runs before you merge.
+  Use the Actions tab, or run `gh api -X POST repos/OWNER/REPO/actions/runs/RUN_ID/approve`.
 
 ## Set up a new repository
 
