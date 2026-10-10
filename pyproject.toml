@@ -1,0 +1,34 @@
+[project]
+name = "clef-browse-fast"
+version = "0.0.0"
+description = "Natural-language browser subtasks on an existing BrowserOS Neo session: jev-ultrafast engine, Cloudflare Clef decisions."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx[http2]>=0.28,<1",
+    "websockets>=13",
+]
+
+[project.scripts]
+clef-browse = "clef_browse.cli:main"
+clef-browse-mcp = "clef_browse.mcp_server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/clef_browse", "src/jev_ultrafast"]
+
+[dependency-groups]
+dev = ["pytest>=8.4,<9", "ruff>=0.14,<1"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
