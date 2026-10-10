@@ -93,6 +93,7 @@ The MCP server sends these rules to the calling agent in the tool description. T
 | [Contributing](CONTRIBUTING.md) | How to set up, test, and send a change. |
 | [Security policy](SECURITY.md) | How to report a vulnerability. |
 | [Changelog](CHANGELOG.md) | The changes in each version. |
+| [Releasing](docs/releasing.md) | The commit format and the release steps. |
 
 ## Known limits
 

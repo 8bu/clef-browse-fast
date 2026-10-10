@@ -68,9 +68,12 @@ Code, file paths, and quoted error messages stay as they are.
 
 1. Make a branch.
 2. Make your change in small steps. Add or update the tests.
-3. Update the documents that the change affects. Add a line to [CHANGELOG.md](CHANGELOG.md).
+3. Update the documents that the change affects. Do not edit [CHANGELOG.md](CHANGELOG.md). A tool writes it.
 4. Run the three checks.
 5. Open a pull request. Say what changed, why, and how you tested it.
+
+Write the pull request title as a conventional commit, for example `fix: handle a missing tab`.
+The commit type sets the next version. See [Releasing](docs/releasing.md).
 
 Never commit `.env` or a token. If you commit a secret by mistake, revoke it at once.
 
