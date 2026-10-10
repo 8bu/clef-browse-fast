@@ -8,12 +8,11 @@ Only the latest release gets security fixes.
 
 Do not open a public issue for a security problem.
 
-1. Use the private vulnerability reporting feature of the service that hosts this repository.
-2. If that feature is off, contact the maintainers by the method in the repository profile.
-3. Describe the problem, the steps to repeat it, and the effect.
-4. Remove your tokens and private data from the report.
+1. Send an email to [long@8bu.dev](mailto:long@8bu.dev).
+2. Describe the problem, the steps to repeat it, and the effect.
+3. Remove your tokens and private data from the report.
 
-The maintainers will confirm that they received your report and will tell you what they plan to do.
+The maintainer will confirm that the email arrived and will tell you the plan.
 
 ## What counts as a vulnerability
 
