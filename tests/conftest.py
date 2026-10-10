@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import shutil
+import signal
 import socket
 import subprocess
 import tempfile
@@ -56,7 +57,21 @@ def _chrome_binary() -> str | None:
     mac_chrome = Path("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
     if mac_chrome.is_file():
         return str(mac_chrome)
-    return shutil.which("chromium") or shutil.which("google-chrome")
+    return shutil.which("google-chrome") or shutil.which("google-chrome-stable") or shutil.which("chromium")
+
+
+def _stop(process: subprocess.Popen) -> None:
+    """Stop Chrome and its child processes. A wrapper script can hide the real browser."""
+    for sig in (signal.SIGTERM, signal.SIGKILL):
+        try:
+            os.killpg(process.pid, sig)
+        except ProcessLookupError:
+            return
+        try:
+            process.wait(timeout=5)
+            return
+        except subprocess.TimeoutExpired:
+            continue
 
 
 @pytest.fixture(scope="session")
@@ -81,6 +96,7 @@ def test_cdp_url():
         ],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
+        start_new_session=True,
     )
     url = f"http://127.0.0.1:{port}"
     deadline = time.monotonic() + 15
@@ -94,15 +110,9 @@ def test_cdp_url():
         except OSError:
             time.sleep(0.05)
     else:
-        process.terminate()
-        process.wait(timeout=5)
+        _stop(process)
         profile.cleanup()
         _unavailable("Headless Chrome debugging endpoint did not become ready")
     yield url
-    process.terminate()
-    try:
-        process.wait(timeout=5)
-    except subprocess.TimeoutExpired:
-        process.kill()
-        process.wait(timeout=5)
+    _stop(process)
     profile.cleanup()
