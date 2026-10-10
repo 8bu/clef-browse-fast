@@ -99,7 +99,7 @@ def test_cdp_url():
         start_new_session=True,
     )
     url = f"http://127.0.0.1:{port}"
-    deadline = time.monotonic() + 15
+    deadline = time.monotonic() + 45
     while time.monotonic() < deadline:
         if process.poll() is not None:
             profile.cleanup()
