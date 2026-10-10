@@ -69,6 +69,16 @@ You can start a task from the command line. You can also start it from an MCP cl
 
 The command prints a JSON result. The `status` field is `done` when the task is complete.
 
+### Install without a clone
+
+```bash
+uv tool install git+https://github.com/8bu/clef-browse-fast
+```
+
+This installs the commands `clef-browse` and `clef-browse-mcp`. Run `clef-browse check` in a folder that holds your `.env` file.
+The commands read `.env` from the current folder. You can also set the same variables in your shell.
+After the first release, add `@vX.Y.Z` to the URL to install one version. The repository does not publish to PyPI.
+
 ## Write goals that finish
 
 Clef decides that a task is complete only when the page shows proof. Follow these two rules:

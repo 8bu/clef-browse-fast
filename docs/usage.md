@@ -80,6 +80,17 @@ Add this entry to `~/.omp/agent/mcp.json`. Set `cwd` to the folder of this proje
 }
 ```
 
+If you installed the commands with `uv tool install`, use the command name. Set `cwd` to any folder that holds your `.env` file.
+
+```json
+"clef-browse": {
+  "type": "stdio",
+  "command": "clef-browse-mcp",
+  "cwd": "/path/to/folder-with-env-file",
+  "timeout": 300000
+}
+```
+
 An OMP session reads its tool list when it starts. Start a new session after you add the entry.
 
 ## The result
